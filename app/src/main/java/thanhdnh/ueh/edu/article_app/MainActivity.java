@@ -9,26 +9,32 @@ import android.widget.GridView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
-  public GridView gridview;
+    public static final String EXTRA_USER_ID = "id";
+    private GridView gridView;
 
-  private AdapterView.OnItemClickListener onitemclick = new AdapterView.OnItemClickListener() {
+    private final AdapterView.OnItemClickListener onItemClick =
+            (AdapterView<?> parent, View view, int position, long id) -> {
+                Intent intent = new Intent(MainActivity.this, ViewUserActivity.class);
+                intent.putExtra(EXTRA_USER_ID, gridView.getAdapter().getItemId(position));
+                startActivity(intent);
+            };
+
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-      Intent intent = new Intent(getBaseContext(), ViewArticleActivity.class);
-      intent.putExtra("id", gridview.getAdapter().getItemId(position));
-      startActivity(intent);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
+
+        gridView = findViewById(R.id.gridview);
+        new UserData(getBaseContext(), gridView).loadData(
+                "https://gist.githubusercontent.com/KhacTuan1224/3bf43934e964ac2ef701502e21a42631/raw/c75777d3d178428bee81f7ab4d8b45c7ccd1ddbb/users.json",
+                this);
+        gridView.setOnItemClickListener(onItemClick);
     }
-  };
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
-    getSupportActionBar().hide();
-
-    gridview = findViewById(R.id.gridview);
-    new ArticleData(getBaseContext(), gridview).loadData("https://raw.githubusercontent.com/thanhdnh/json/main/products.json", this);
-    gridview.setOnItemClickListener(onitemclick);
-  }
-
+    public static UserProfile getUserById(int id) {
+        return UserData.getUserById(id);
+    }
 }

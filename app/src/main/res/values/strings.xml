@@ -1,3 +1,9 @@
 <resources>
-  <string name="app_name">Article View</string>
+  <string name="app_name">User Profiles</string>
+  <string name="user_avatar">Ảnh đại diện người dùng</string>
+  <string name="user_id_value">ID: %1$d</string>
+  <string name="email_value">Email: %1$s</string>
+  <string name="hobbies_value">Sở thích: %1$s</string>
+  <string name="description_label">Mô tả</string>
+  <string name="back">← Quay lại</string>
 </resources>
